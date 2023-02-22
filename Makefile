@@ -24,6 +24,6 @@ clean:
 clean-all: clean
 	-rm -rf ./musl-install
 	-rm -f musl/config.mak
-	make -f musl/Makefile clean
+	cd musl && make clean
 
 .PHONY: run clean clean-all
