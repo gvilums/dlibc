@@ -6,13 +6,13 @@ build:
 	mkdir -p build 
 
 musl/config.mak:
-	CFLAGS="-g" cd musl && ./configure --prefix="$(shell pwd)/musl-install" --disable-shared 
+	cd musl && CFLAGS="-g" ./configure --prefix="$(shell pwd)/musl-install" --disable-shared 
 
 musl-install: $(shell find $(MUSL_DIR)) $(MUSL_DIR) musl/config.mak
 	rm -rf musl-install
 	cd musl && make -j 16 && make install -j 16
 
-build/test: test.c musl-install build
+build/test: test.c musl-install | build
 	./musl-install/bin/musl-gcc test.c -o ./build/test -static -g
 
 run: build/test
@@ -26,4 +26,4 @@ clean-all: clean
 	-rm -f musl/config.mak
 	cd musl && make clean
 
-.PHONY: run clean clean-all
+.PHONY: all run clean clean-all
