@@ -15,6 +15,9 @@ musl-install: $(shell find $(MUSL_DIR)) $(MUSL_DIR) musl/config.mak
 build/test: test.c musl-install | build
 	./musl-install/bin/musl-gcc test.c -o ./build/test -static -g
 
+build/testxx: test.cpp musl-install | build
+	./musl-install/bin/musl-gcc test.c -o ./build/test -static -g
+
 run: build/test
 	./build/test
 
