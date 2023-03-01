@@ -15,11 +15,11 @@ build:
 	mkdir -p build 
 
 musl/config.mak:
-	cd musl && CFLAGS="-g" ./configure --prefix="$(shell pwd)/musl-install" --disable-shared 
+	cd musl && CFLAGS="-g -march=morello -mabi=aapcs" CC="/usr/bin/cc" ./configure --prefix="$(shell pwd)/musl-install" --disable-shared 
 
 musl-install: $(shell find $(MUSL_DIR)) $(MUSL_DIR) musl/config.mak
 	rm -rf musl-install
-	cd musl && make -j 16 && make install -j 16
+	cd musl && gmake -j 16 && gmake install -j 16
 
 build/test.o: test.c musl-install | build
 	$(CC) $(CFLAGS) test.c -o build/test.o
@@ -49,7 +49,7 @@ clean:
 clean-all: clean
 	-rm -rf ./musl-install
 	-rm -f musl/config.mak
-	cd musl && make clean
+	cd musl && gmake clean
 
 .PHONY: all run clean clean-all trace debug
 
