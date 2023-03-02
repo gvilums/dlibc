@@ -1,18 +1,18 @@
 MUSL_DIR = musl
 
-CFLAGS = -nostdlib --sysroot=./musl-install -isystem ./musl-install/include -c -g
+CFLAGS = -nostdlib --sysroot=./musl-install -isystem ./musl-install/include -c -g -march=morello -mabi=aapcs -fno-asynchronous-unwind-tables
 CXXFLAGS = $(CFLAGS) 
 CC ?= clang-15
 CXX ?= clang++-15
 
-LD = clang-15 ./musl-install/lib/crt1.o -nostdlib --sysroot=./musl-install -static -fuse-ld=lld
+LD = $(CC) ./musl-install/lib/crt1.o -nostdlib --sysroot=./musl-install -static -fuse-ld=lld -march=morello -mabi=aapcs
 LIBS = -L ./musl-install/lib -lc 
 LIBSXX = $(LIBS) -stdlib=libc++
 
-# MUSL_CFLAGS = -g -march=morello -mabi=aapcs
-# MUSL_CC = /usr/bin/cc
-MUSL_CFLAGS = -ggdb -O0
-MUSL_CC = $(CC)
+MUSL_CFLAGS = -g -march=morello -mabi=aapcs
+MUSL_CC = /usr/bin/cc
+#MUSL_CFLAGS = -ggdb -O0
+#MUSL_CC = $(CC)
 
 all: build/test
 
