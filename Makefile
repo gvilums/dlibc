@@ -9,13 +9,18 @@ LD = clang-15 ./musl-install/lib/crt1.o -nostdlib --sysroot=./musl-install -stat
 LIBS = -L ./musl-install/lib -lc 
 LIBSXX = $(LIBS) -stdlib=libc++
 
+# MUSL_CFLAGS = -g -march=morello -mabi=aapcs
+# MUSL_CC = /usr/bin/cc
+MUSL_CFLAGS = -ggdb -O0
+MUSL_CC = $(CC)
+
 all: build/test
 
 build:
 	mkdir -p build 
 
 musl/config.mak:
-	cd musl && CFLAGS="-g -march=morello -mabi=aapcs" CC="/usr/bin/cc" ./configure --prefix="$(shell pwd)/musl-install" --disable-shared 
+	cd musl && CFLAGS="$(MUSL_CFLAGS)" CC="$(MUSL_CC)" ./configure --prefix="$(shell pwd)/musl-install" --disable-shared 
 
 musl-install: $(shell find $(MUSL_DIR)) $(MUSL_DIR) musl/config.mak
 	rm -rf musl-install
