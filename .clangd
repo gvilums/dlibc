@@ -1,3 +1,3 @@
 CompileFlags:
-    Add: [-I musl/src/internal, -I musl/src/include, -nostdinc]
+    Add: [-I musl/src/internal, -I musl/src/include, -I musl/arch/aarch64, -I musl/include, -nostdinc]
     Compiler: clang-15
