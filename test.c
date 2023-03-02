@@ -23,7 +23,7 @@ int main() {
 	}
 	free(z);
 
-	return 0;
+	return 10;
 }
 
 
